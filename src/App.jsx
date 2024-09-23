@@ -21,7 +21,7 @@ const App = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/login', { username: formData.username, password: formData.password });
+      const response = await axios.post('http://127.0.0.1:1199/api/login', { email: formData.email, password: formData.password });
       if (response.data.success) {
         window.location.href = '/dashboard'; // Update the path accordingly
       } else {
@@ -70,7 +70,7 @@ const App = () => {
 
                 {!isRegistering && (
                   <>
-                    <input className="w-full p-3 border-t-0 border-r-0 border-l-0 border-b-2 border-gray-400 placeholder-gray-600 text-lg font-normal rounded-t-lg" type="text" name="username" placeholder="User Name" value={formData.username} onChange={handleInputChange} required />
+                    <input className="w-full p-3 border-t-0 border-r-0 border-l-0 border-b-2 border-gray-400 placeholder-gray-600 text-lg font-normal rounded-t-lg" type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} required />
                     <input className="w-full p-3 border-t-0 border-r-0 border-l-0 border-b-2 border-gray-400 placeholder-gray-600 text-lg font-normal rounded-t-lg" type="password" name="password" placeholder="Password" value={formData.password} onChange={handleInputChange} required />
                   </>
                 )}
