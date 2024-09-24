@@ -1,6 +1,7 @@
 import React from 'react';
+import Footer from './Footer';
 
-const Navbar = () => {
+const Header = () => {
   return (
     <nav className="bg-gray-800 text-white py-4 px-6 w-full fixed top-0 z-50 flex justify-between items-center">
       <div>
@@ -18,4 +19,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Header;
