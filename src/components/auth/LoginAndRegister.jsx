@@ -26,7 +26,7 @@ const LoginAndRegister = () => {
       console.log(response.data);
       if (response.data.status) {
           localStorage.setItem('token', response.data.data.token);
-          navigate('/dashboard');
+          navigate('/clientdashboard');
       } else {
         setErrorMessage(response.data.error);
       }
