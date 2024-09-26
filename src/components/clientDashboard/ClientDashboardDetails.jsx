@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+
 import axios from 'axios';
-import Header from '../Header';
 
 const ClientDashboardDetails = () => {
+    const navigate = useNavigate();
     const [clientDetails, setClientDetails] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [searchInput, setSearchInput] = useState('');
@@ -32,14 +35,14 @@ const ClientDashboardDetails = () => {
     const searchClientDetails = async (searchValue) => {
       try {
           const response = await axios.get('http://127.0.0.1:1199/api/searchclientdetails', {
-              params: { search: searchValue }, // Sending search input as a query parameter
+              params: { search: searchValue },
               headers: {
                   'Content-Type': 'application/json',
               },
           });
   
           if (response.data.status) {
-              setClientDetails(response.data.data[0]); // Set all data returned
+              setClientDetails(response.data.data[0]);
           } else {
               setErrorMessage(response.data.error);
           }
@@ -48,27 +51,28 @@ const ClientDashboardDetails = () => {
           setErrorMessage('An error occurred while fetching client details.');
       }
   };
-  
-
 
       function searchOnChange(event) {
         let inputFieldValue = event.target.value;
         setSearchInput(inputFieldValue);
-      
-        // Introduce a delay before search
-        const delayInMilliseconds = 1000; // Adjust delay as needed
+        const delayInMilliseconds = 1000;
         setTimeout(() => {
           searchClientDetails(inputFieldValue);
         }, delayInMilliseconds);
       }
   
+
+      function moreDetails(client) {
+        navigate('/moreDetails', { state: { clientId: client } });
+      }
+      
   
 
     return (
         <div>
             {errorMessage && <p>{errorMessage}</p>}
-            <div class="flex justify-center items-center flex-wrap my-4">
-              <label for="bank" class="mr-4">Search</label>
+            <div className="flex justify-center items-center flex-wrap my-4">
+              <label htmlFor="bank" className="mr-4">Search</label>
               <input type="text" id="searchVal" name="bank" placeholder="ID,Client ID,Bank Name,Country,SPOC...." value={searchInput}
                className="border w-1/4 px-2 py-1 mr-4 rounded-full text-sm transition duration-300 focus:border-green-500" onChange={searchOnChange}></input>
             </div>
@@ -110,13 +114,13 @@ const ClientDashboardDetails = () => {
                                             {/* <td className={cellClass}>{client.CREATED_AT}</td> */}
                                             <td className={cellClass}>{client.UPDATED_AT}</td>
                                             <td className="px-2 py-1 text-center whitespace-normal break-words text-sm font-medium">
-                                                <button type="button" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">
+                                                <button type="button" onClick={() => moreDetails(client)} className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">
                                                     More
                                                 </button>
-                                                <button type="edit" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">
+                                                <button type="button"  className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">
                                                     Edit
                                                 </button>
-                                                <button type="delete" className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">
+                                                <button type="button"  className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">
                                                     Delete
                                                 </button>
                                             </td>

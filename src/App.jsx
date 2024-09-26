@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import LoginAndRegister from './components/auth/LoginAndRegister';
 import ClientDashboardDetails from './components/clientDashboard/ClientDashboardDetails';
+import MoreDetails from './components/clientDashboard/MoreDetails';
 import Footer from './components/Footer';
 import Header from './components/Header';
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/" element={<LoginAndRegister />} />
           <Route path="/login" element={<LoginAndRegister />} />
           <Route path="/clientdashboard" element={<ClientDashboardDetails />} />
+          <Route path="/moreDetails" element={<MoreDetails />} />
         </Routes>
       </Layout>
     </Router>
