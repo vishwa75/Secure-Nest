@@ -3,9 +3,9 @@ import Footer from './Footer';
 
 const Header = () => {
   return (
-    <nav className="bg-gray-800 text-white py-4 px-6 w-full fixed top-0 z-50 flex justify-between items-center">
+    <nav className="bg-gray-800 text-white py-2 px-6 w-full top-0 z-50 flex h-10 justify-between items-center">
       <div>
-        The Application
+        Secure Nest
       </div>
       <div className="flex justify-between items-center space-x-4">
         <div>

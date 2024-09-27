@@ -9,22 +9,19 @@ const MoreDetails = () => {
     const [loading, setLoading] = useState(true);
     const hasLoaded = useRef(false);
 
-    // Ensure client ID is retrieved correctly
     const client_ID = client.state?.clientId?.CLIENT_ID;
 
     useEffect(() => {
         if (!hasLoaded.current && client_ID) {
             console.log('Client ID:', client_ID);
             getClientDetails(client_ID);
-            hasLoaded.current = true; // Set to true after loading
+            hasLoaded.current = true;
         }
     }, [client_ID]);
 
     const getClientDetails = async (client_ID) => {
         try {
-            console.log('Client ID being sent:', client_ID);
             setLoading(true);
-
             const response = await axios.get('http://127.0.0.1:1199/api/getserverdetails', {
                 params: { clientid: client_ID },
                 headers: {
@@ -32,15 +29,13 @@ const MoreDetails = () => {
                 },
             });
 
-            console.log('API Response:', response.data);
             if (response.data.status) {
-                setServerDetails(response.data.data[0]); // Set the server details array
+                setServerDetails(response.data.data[0]);
                 setErrorMessage('');
             } else {
-                setErrorMessage(response.data.message); // Use the message for error
+                setErrorMessage(response.data.message);
             }
         } catch (error) {
-            console.error('Error fetching client details:', error);
             setErrorMessage('An error occurred while fetching client details.');
         } finally {
             setLoading(false);
@@ -48,34 +43,60 @@ const MoreDetails = () => {
     };
 
     return (
-        <div>
-            <h1>Server Details</h1>
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-            {loading ? (
-                <p>Loading server details for Client ID: {client_ID}...</p>
-            ) : (
-                serverDetails.length > 0 ? (
-                    serverDetails.map(server => (
-                        <div key={server.ID}>
-                            <h2>{server.SERVER_NAME}</h2>
-                            <p>Client ID: {server.CLIENT_ID}</p>
-                            <p>Environment: {server.ENVIRONMENT}</p>
-                            <p>IP Address: {server.IP_ADDRESS}</p>
-                            <p>Operating System: {server.OPERATING_SYSTEM}</p>
-                            <p>Status: {server.STATUS}</p>
-                            <p>Disk Space: {server.DISK_SPACE}</p>
-                            <p>Memory: {server.MEMORY}</p>
-                            <p>Username: {server.USERNAME}</p>
-                            <p>Additional Notes: {server.ADDITIONAL_NOTES}</p>
-                            {/* Add other fields as necessary */}
-                            <hr />
+        <div style={{ height: 'calc(100vh - 80px)'}} className='p-5 flex justify-center items-center'>
+        <div className='w-full'>
+            <div className="flex justify-center items-center flex-wrap">
+                <span className='text-2xl font-bold text-slate-800'>Server Details</span>
+            </div>
+        <div className="overflow-y-auto px-6 py-6 mt-5" style={{height:'30rem'}} > {/* Adjust height as needed */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {serverDetails.map((server) => (
+                    <div key={server.ID} className="relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-full">
+                        <div className="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
+                            <span className="text-sm font-medium text-slate-600">
+                                Environment : <span className='font-bold'>{server.ENVIRONMENT}</span>
+                            </span>
                         </div>
-                    ))
-                ) : (
-                    <p>No server details found.</p>
-                )
-            )}
+
+                        <div className="p-4">
+                            <h5 className="mb-2 text-slate-800 text-xl font-semibold">
+                                Server Name : {server.SERVER_NAME}
+                            </h5>
+                            <p className="text-slate-600 leading-normal font-light">
+                                IP Addess : {server.IP_ADDRESS}
+                            </p>
+                            <p className="text-slate-600 leading-normal font-light">
+                                Port : {server.PORT}
+                            </p>
+                            <p className="text-slate-600 leading-normal font-light">
+                                User Name : {server.USERNAME}
+                            </p>
+                            <p className="text-slate-600 leading-normal font-light">
+                                OS : {server.OPERATING_SYSTEM}
+                            </p>
+                            <p className="text-slate-600 leading-normal font-light">
+                                Disk Space : {server.DISK_SPACE}
+                            </p>
+                            <p className="text-slate-600 leading-normal font-light">
+                                Memory : {server.MEMORY}
+                            </p>
+                            <p className="text-slate-600 leading-normal font-light">
+                                Notes : {server.ADDITIONAL_NOTES}
+                            </p>
+                            {/* Repeat details or dynamically render based on data */}
+                        </div>
+
+                        <div className="mx-3 border-t border-slate-200 pb-3 pt-2 px-1">
+                            <span className="text-sm text-slate-600 font-medium">
+                                Last updated: {server.UPDATED_AT}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
+        </div>
+    </div>
     );
 };
 
